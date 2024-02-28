@@ -1,0 +1,20 @@
+{
+    "techs":[
+        {
+            "title": "GitHub",
+            "value": 90,
+            "comment": "I use GitHub for version control and to collaborate with other developers."
+        },
+        {
+            "title": "Docker",
+            "value": 50,
+            "comment": "I use Docker to containerize my applications and to deploy them to the cloud."
+        },
+        {
+            "title": "AWS",
+            "value": 60,
+            "comment": "I use AWS"
+        }
+    ]
+
+}

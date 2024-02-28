@@ -1,0 +1,26 @@
+{
+    "language": [
+        {
+            "title": "JavaScript",
+            "value": 90,
+            "comment": "A high-level, interpreted programming language"
+        },
+        {
+            "title": "Python",
+            "value": 70,
+            "comment": "An interpreted, high-level, general-purpose programming language"
+        }
+    ],
+    "library": [
+        {
+            "title": "Redux",
+            "value": 80,
+            "comment": "A predictable state container for JavaScript apps"
+        },
+        {
+            "title": "D3",
+            "value": 70,
+            "comment": "A JavaScript library for producing dynamic, interactive data visualizations in web browsers"
+        }
+    ]
+}

@@ -1,0 +1,26 @@
+{
+    "language": [
+        {
+            "title": "HTML",
+            "value": 90,
+            "comment": "HyperText Markup Language"
+        },
+        {
+            "title": "CSS",
+            "value": 80,
+            "comment": "Cascading Style Sheets"
+        }
+    ],
+    "library": [
+        {
+            "title": "React",
+            "value": 80,
+            "comment": "A JavaScript library for building user interfaces"
+        },
+        {
+            "title": "Vue",
+            "value": 70,
+            "comment": "The Progressive JavaScript Framework"
+        }
+    ]
+}

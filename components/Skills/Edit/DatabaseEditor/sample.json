@@ -1,0 +1,36 @@
+{
+    "system":[
+        {
+            "title": "PostgreSQL",
+            "value": 80,
+            "comment": "I have been using PostgreSQL for 2 years"
+        },
+        {
+            "title": "MySQL",
+            "value": 70,
+            "comment": "I have been using MySQL for 2 years"
+        },
+        {
+            "title": "SQL Server",
+            "value": 60,
+            "comment": "I have been using SQL Server for 1 year"
+        }
+    ],
+    "orm":[
+        {
+            "title": "Sequelize",
+            "value": 80,
+            "comment": "I have been using MySQL for 2 years"
+        },
+        {
+            "title": "TypeORM",
+            "value": 70,
+            "comment": "I have been using TypeORM for 1 year"
+        },
+        {
+            "title": "Entity Framework",
+            "value": 60,
+            "comment": "I have been using Entity Framework for 1 year"
+        }
+    ]
+}
