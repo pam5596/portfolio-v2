@@ -7,11 +7,19 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import EditSkills from "/components/Skills/Edit";
 import EditWorks from "/components/Works/Edit";
+import { callAPI } from "/src/request";
 
 const useStyles = makeStyles(styles);
 
 export default function Edit() {
     const classes = useStyles();
+    
+    callAPI("GET", "/api/test")
+        .then((response) => {
+            console.log(response);
+    })
+
+
     return (
         <>
         <div className={classNames(classes.main)}>
