@@ -70,7 +70,10 @@ export default function Works() {
                         tabIcon: QueueMusic,
                         tabContent: (
                             <GridContainer>
-                                <Composecard title="Test" genre="test" time="2020/02/02"
+                                <Composecard 
+                                    title="Test" 
+                                    genre="test" 
+                                    time="2020/02/02"
                                     src="https://i1.sndcdn.com/avatars-QguU21zU1btfoVWA-y6dmHw-t500x500.jpg"
                                     audio="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
                                     youtube="https://www.youtube.com/"
@@ -85,10 +88,11 @@ export default function Works() {
                         tabIcon: Description,
                         tabContent: (
                             <GridContainer>
-                                <Writecard title="Test" time="2020/02/02"
+                                <Writecard 
+                                    title="Test" 
+                                    time="2020/02/02"
                                     src="https://i1.sndcdn.com/avatars-QguU21zU1btfoVWA-y6dmHw-t500x500.jpg"
                                     link="https://www.youtube.com/">
-                                    test
                                 </Writecard>
                             </GridContainer>
                         )

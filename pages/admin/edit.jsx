@@ -13,12 +13,6 @@ const useStyles = makeStyles(styles);
 
 export default function Edit() {
     const classes = useStyles();
-    
-    callAPI("GET", "/api/test")
-        .then((response) => {
-            console.log(response);
-    })
-
 
     return (
         <>
