@@ -12,7 +12,7 @@ const Techs = memo((props) => {
                     color={props.color}
                     value={props.value}
                 />
-                <Muted>- {props.description}</Muted>
+                <small>- {props.description}</small>
                 <br/>
             </Box>
         </>

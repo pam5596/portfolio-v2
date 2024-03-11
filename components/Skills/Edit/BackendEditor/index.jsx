@@ -1,13 +1,15 @@
 import { useState, useCallback, memo, useContext } from "react";
 import { GridContainer, GridItem, Button } from "/components/creative-tim";
-import { Add, Delete } from "@material-ui/icons";
+import { Add, Delete, Save } from "@material-ui/icons";
 
 import { BackendContext } from "/components/Skills/Edit/global_state";
 import TechsEditor from "/components/Skills/Techs/Edit";
+import { callAPI } from "/src/request.js";
 
 export const BackendEditor = memo(() => {
     // sample data array object
     const { backend, setBackend } = useContext(BackendContext);
+
     // setup functions
     const setup_backend = useCallback((category_type) => {
         setBackend(backend);
@@ -55,10 +57,10 @@ export const BackendEditor = memo(() => {
     // handlers
     const addHandler = useCallback((category_type) => {
         if (category_type === "language") {
-            backend.language.push({title: "", value: 0, comment: ""});
+            backend.language.push({category: true, title: "", value: 0, comment: ""});
             setBackendLanguage(setup_backend(category_type));
         } else if (category_type === "library") {
-            backend.library.push({title: "", value: 0, comment: ""});
+            backend.library.push({category: false, title: "", value: 0, comment: ""});
             setBackendLibrary(setup_backend(category_type));
         }
         
@@ -74,8 +76,34 @@ export const BackendEditor = memo(() => {
         }
     },[]);
 
+    const saveHandler = useCallback(() => 
+        callAPI('POST', '/api/backend', backend)  
+            .then(
+                (response) => {
+                    if (response.status == 200) {
+                        alert(response.data);
+                    } else {
+                        alert("データベースの更新に失敗しました。")
+                    }
+                }
+            )
+            .catch(
+                (error) => alert(`APIの取得に失敗しました\n${error}`)
+            )
+    , []);
+
     return (
         <GridContainer justify="center">
+            <Button
+                variant="contained" 
+                startIcon={<Save />} 
+                style={{backgroundColor: "#266adf", color: "white"}} 
+                fullWidth
+                // Todo: APIにデータを送信
+                onClick={saveHandler}
+            >
+                Save
+            </Button>
             <GridItem xs={12} sm={6} md={6}>
                 <GridContainer>
                     <GridItem xs={6} sm={6} md={6}>

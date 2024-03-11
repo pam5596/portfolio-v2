@@ -1,9 +1,10 @@
 import { useState, useCallback, memo, useContext } from "react";
 import { GridContainer, GridItem, Button } from "/components/creative-tim";
-import { Add, Delete } from "@material-ui/icons";
+import { Add, Delete, Save } from "@material-ui/icons";
 
 import { DatabaseContext } from "/components/Skills/Edit/global_state";
 import TechsEditor from "/components/Skills/Techs/Edit";
+import { callAPI } from "/src/request.js";
 
 export const DatabaseEditor = memo(() => {
     // sample data array object
@@ -55,10 +56,10 @@ export const DatabaseEditor = memo(() => {
     // handlers
     const addHandler = useCallback((category_type) => {
         if (category_type === "system") {
-            database.system.push({title: "", value: 0, comment: ""});
+            database.system.push({category: true, title: "", value: 0, comment: ""});
             setDatabaseSystem(setup_database(category_type));
         } else if (category_type === "orm") {
-            database.orm.push({title: "", value: 0, comment: ""});
+            database.orm.push({category: false, title: "", value: 0, comment: ""});
             setDatabaseOrm(setup_database(category_type)); 
         }
     }, []);
@@ -73,8 +74,33 @@ export const DatabaseEditor = memo(() => {
         }
     },[]);
 
+    const saveHandler = useCallback(() => 
+        callAPI('POST', '/api/database', database)  
+            .then(
+                (response) => {
+                    if (response.status == 200) {
+                        alert(response.data);
+                    } else {
+                        alert("データベースの更新に失敗しました。")
+                    }
+                }
+            )
+            .catch(
+                (error) => alert(`APIの取得に失敗しました\n${error}`)
+            )
+    , []);
+
     return (
         <GridContainer justify="center">
+            <Button
+                variant="contained" 
+                startIcon={<Save />} 
+                style={{backgroundColor: "#266adf", color: "white"}} 
+                fullWidth
+                onClick={saveHandler}
+            >
+                Save
+            </Button>
             <GridItem xs={12} sm={6} md={6}>
                 <GridContainer>
                     <GridItem xs={6} sm={6} md={6}>

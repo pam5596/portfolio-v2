@@ -5,7 +5,7 @@ export const callAPI = async (method, endpoint, params) =>
     axios({
         method: method,
         url: endpoint,
-        data: endpoint === undefined ? null : params,
+        data: params,
     }).then((response) => {
         return {
             status: response.status,

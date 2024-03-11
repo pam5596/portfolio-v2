@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { GridContainer, GridItem, CustomTabs } from "/components/creative-tim";
 import { DesktopWindows, Settings, Storage, Backup } from "@material-ui/icons";
 
@@ -7,12 +8,102 @@ import { DatabaseEditor } from "/components/Skills/Edit/DatabaseEditor";
 import { DevOpsEditor } from "/components/Skills/Edit/DevopsEditor";
 
 import { FrontendProvider, BackendProvider, DatabaseProvider, DevOpsProvider } from "/components/Skills/Edit/global_state";
+import { callAPI } from "/src/request.js";
 import frontendsample from "/components/Skills/Edit/FrontendEditor/sample.json";
 import backendsample from "/components/Skills/Edit/BackendEditor/sample.json";
 import databasesample from "/components/Skills/Edit/DatabaseEditor/sample.json";
 import devopssample from "/components/Skills/Edit/DevopsEditor/sample.json";
 
 export default function EditSkills() {
+    // Techsコンポーネント群の状態管理
+    const [frontendData, setFrontend] = useState();
+    const [backendData, setBackend] = useState();
+    const [databaseData, setDatabase] = useState();
+    const [devopsData, setDevops] = useState();
+
+    // ローディング状態管理
+    const [loading, setLoading] = useState(
+        {frontend: true, backend: true, database: true, devops: true}
+    );
+
+    useEffect(()=>{
+        // Frontendのデータを取得
+        callAPI('GET', '/api/frontend', null)
+            .then(
+                (response)=>{
+                    if (response.status === 200) {
+                        setFrontend(response.data);
+                        loading.frontend = false;
+                        setLoading(loading);
+        
+        // Backendのデータを取得
+        callAPI('GET', '/api/backend', null)
+            .then(
+                (response)=>{
+                    if (response.status === 200) {
+                        setBackend(response.data);
+                        loading.backend = false;
+                        setLoading(loading);
+        
+        // Databaseのデータを取得
+        callAPI('GET', '/api/database', null)
+            .then(
+                (response)=>{
+                    if (response.status === 200) {
+                        setDatabase(response.data);
+                        loading.database = false;
+                        setLoading(loading);
+
+        // Devopsのデータを取得
+        callAPI('GET', '/api/devops', null)
+            .then(
+                (response)=>{
+                    if (response.status === 200) {
+                        setDevops(response.data);
+                        loading.devops = false;
+                        setLoading(loading);
+
+            // devopsのエラーハンドリング
+                    } else {
+                        alert(`APIの取得に失敗しました\n${response}`)
+                    }
+                }
+            )
+            .catch(
+                (error) => alert(`APIの取得に失敗しました\n${error}`)
+            );
+
+            // databaseのエラーハンドリング
+                    } else {
+                        alert(`APIの取得に失敗しました\n${response}`)
+                    }
+                }
+            )
+            .catch(
+                (error) => alert(`APIの取得に失敗しました\n${error}`)
+            );
+            
+            // backendのエラーハンドリング
+                    } else {
+                        alert(`APIの取得に失敗しました\n${response}`)
+                    }
+                }
+            )
+            .catch(
+                (error) => alert(`APIの取得に失敗しました\n${error}`)
+            );
+
+            // frontendのエラーハンドリング
+                    } else {
+                        alert(`APIの取得に失敗しました\n${response}`)
+                    }
+                }
+            )
+            .catch(
+                (error) => alert(`APIの取得に失敗しました\n${error}`)
+            );
+    }, []);
+
     return (
         <>
             <GridContainer id='skills' justify="center">
@@ -26,8 +117,10 @@ export default function EditSkills() {
                         {
                         tabName: "Frontend",
                         tabIcon: DesktopWindows,
-                        tabContent: (
-                            <FrontendProvider firstValue={frontendsample}>
+                        tabContent: 
+                            loading.frontend || 
+                        (
+                            <FrontendProvider firstValue={frontendData}>
                                 <FrontendEditor />
                             </FrontendProvider>
                         )
@@ -35,8 +128,10 @@ export default function EditSkills() {
                         {
                         tabName: "Backend",
                         tabIcon: Settings,
-                        tabContent: (
-                            <BackendProvider firstValue={backendsample}>
+                        tabContent: 
+                            loading.backend ||
+                        (
+                            <BackendProvider firstValue={backendData}>
                                 <BackendEditor />
                             </BackendProvider>
                         )
@@ -44,8 +139,10 @@ export default function EditSkills() {
                         {
                         tabName: "Database",
                         tabIcon: Storage,
-                        tabContent: (
-                            <DatabaseProvider firstValue={databasesample}>
+                        tabContent: 
+                            loading.database ||
+                        (
+                            <DatabaseProvider firstValue={databaseData}>
                                 <DatabaseEditor />
                             </DatabaseProvider>
                         )
@@ -54,7 +151,7 @@ export default function EditSkills() {
                         tabName: "DevOps",
                         tabIcon: Backup,
                         tabContent: (
-                            <DevOpsProvider firstValue={devopssample}>
+                            <DevOpsProvider firstValue={devopsData}>
                                 <DevOpsEditor />
                             </DevOpsProvider>
                             

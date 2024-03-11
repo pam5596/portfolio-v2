@@ -21,20 +21,7 @@ export default function Edit() {
                 <EditSkills />
                 <EditWorks />
                 <GridContainer justify="center">
-                    <GridItem xs={6} sm={6} md={6}>
-                        <Button 
-                            variant="contained" 
-                            startIcon={<Save />} 
-                            style={{height: "100px", backgroundColor: "#266adf", color: "white"}} 
-                            fullWidth
-
-                            // Todo: APIにデータを送信
-                            onClick={() => {console.log("Save")}}
-                        >
-                            Save
-                        </Button>
-                    </GridItem>
-                    <GridItem xs={6} sm={6} md={6}>
+                    <GridItem xs={12} sm={12} md={12}>
                         <Button 
                             href="/portfolio"  
                             variant="contained"

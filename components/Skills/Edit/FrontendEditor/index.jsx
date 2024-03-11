@@ -1,9 +1,10 @@
-import { useState, useCallback, memo, useContext } from "react";
+import { useState, useCallback, useContext, memo } from "react";
 import { GridContainer, GridItem, Button } from "/components/creative-tim";
-import { Add, Delete } from "@material-ui/icons";
+import { Add, Delete, Save } from "@material-ui/icons";
 
 import { FrontendContext } from "/components/Skills/Edit/global_state";
 import TechsEditor from "/components/Skills/Techs/Edit";
+import { callAPI } from "/src/request.js";
 
 export const FrontendEditor = memo(() => {
     // sample data array object
@@ -13,7 +14,7 @@ export const FrontendEditor = memo(() => {
     const setup_frontend = useCallback((category_type) => {
         setFrontend(frontend);
         if (category_type == "language") {
-            return frontend.language.map((skill, index) => (
+            return frontend?.language.map((skill, index) => (
                 <TechsEditor
                     id={index}
                     title={skill.title} 
@@ -25,7 +26,7 @@ export const FrontendEditor = memo(() => {
                 />
             ));
         } else if (category_type === "library") {
-            return frontend.library.map((skill, index) => (
+            return frontend?.library.map((skill, index) => (
                 <TechsEditor
                     id={index}
                     title={skill.title} 
@@ -55,10 +56,10 @@ export const FrontendEditor = memo(() => {
     // handlers
     const addHandler = useCallback((category_type) => {
         if (category_type === "language") {
-            frontend.language.push({title: "", value: 0, comment: ""});
+            frontend.language.push({category: true, title: "", value: 0, comment: ""});
             setFrontendLanguage(setup_frontend(category_type));
         } else if (category_type === "library") {
-            frontend.library.push({title: "", value: 0, comment: ""});
+            frontend.library.push({category: false, title: "", value: 0, comment: ""});
             setFrontendLibrary(setup_frontend(category_type)); 
         }
     }, []);
@@ -73,8 +74,34 @@ export const FrontendEditor = memo(() => {
         }
     },[]);
 
+    const saveHandler = useCallback(() => 
+        callAPI('POST', '/api/frontend', frontend)    
+            .then(
+                (response) => {
+                    if (response.status == 200) {
+                        alert(response.data);
+                    } else {
+                        alert("データベースの更新に失敗しました。")
+                    }
+                }
+            )
+            .catch(
+                (error) => alert(`APIの取得に失敗しました\n${error}`)
+            )
+    , []);
+
     return (
         <GridContainer justify="center">
+            <Button
+                variant="contained" 
+                startIcon={<Save />} 
+                style={{backgroundColor: "#266adf", color: "white"}} 
+                fullWidth
+                // Todo: APIにデータを送信
+                onClick={saveHandler}
+            >
+                Save
+            </Button>
             <GridItem xs={12} sm={6} md={6}>
                 <GridContainer>
                     <GridItem xs={6} sm={6} md={6}>

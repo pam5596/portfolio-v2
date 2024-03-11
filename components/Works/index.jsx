@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import { GridContainer, GridItem, CustomTabs } from "/components/creative-tim";
 import { DeveloperMode, QueueMusic, Description, EmojiEvents } from "@material-ui/icons";
 
@@ -7,7 +7,20 @@ import { Composecard } from "/components/Works/Composecard";
 import { Writecard } from "/components/Works/Writecard";
 import { Awardcard } from "/components/Works/Awardcard";
 
+import { callAPI } from "/src/request.js";
+
 export default function Works() {
+    
+    useEffect(() => {
+        callAPI("GET", "/api/connection", null)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
+    
     return(
         <>
             <GridContainer id='works' justify="center">
