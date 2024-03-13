@@ -10,7 +10,7 @@ export const callAPI = async (method, endpoint, params) =>
         return {
             status: response.status,
             statusText: response.statusText,
-            data: response.data,
+            data: response.data
         };
     
     }).catch((error) => {

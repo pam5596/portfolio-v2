@@ -9,10 +9,6 @@ import { DevOpsEditor } from "/components/Skills/Edit/DevopsEditor";
 
 import { FrontendProvider, BackendProvider, DatabaseProvider, DevOpsProvider } from "/components/Skills/Edit/global_state";
 import { callAPI } from "/src/request.js";
-import frontendsample from "/components/Skills/Edit/FrontendEditor/sample.json";
-import backendsample from "/components/Skills/Edit/BackendEditor/sample.json";
-import databasesample from "/components/Skills/Edit/DatabaseEditor/sample.json";
-import devopssample from "/components/Skills/Edit/DevopsEditor/sample.json";
 
 export default function EditSkills() {
     // Techsコンポーネント群の状態管理

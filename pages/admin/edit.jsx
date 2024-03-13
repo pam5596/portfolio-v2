@@ -23,7 +23,7 @@ export default function Edit() {
                 <GridContainer justify="center">
                     <GridItem xs={12} sm={12} md={12}>
                         <Button 
-                            href="/portfolio"  
+                            href="/"  
                             variant="contained"
                             startIcon={<Backup />} 
                             style={{height: "100px", backgroundColor: "#2bad65", color: "white"}} 

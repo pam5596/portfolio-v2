@@ -1,4 +1,4 @@
-import { memo, useRef, useState, useCallback } from "react";
+import { memo, useRef, useState, useCallback, useEffect } from "react";
 import { Card, CardBody, Button, GridItem } from "/components/creative-tim";
 import { Box, Tooltip, TextField, Popover } from "@material-ui/core";
 import { Twitter, GitHub, FileCopy, Event, Public } from "@material-ui/icons";
@@ -14,7 +14,7 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export const DevcardEditor = memo((props) => {
+export const DevcardEditor = (props) => {
     const classes = useStyles();
     const inputFileRef = useRef(null);
 
@@ -28,20 +28,20 @@ export const DevcardEditor = memo((props) => {
 
     const setValueAnchor = useCallback((property) => {
         setAnchorEl({...anchorEls, ...property});
-    }, []);
+    });
 
     return(
         <GridItem xs={12} sm={12} md={4}>
             <Card>
                 <Button style={{padding: "0px"}} onClick={() => inputFileRef.current.click()} accept="image/*" simple>
                     <input type="file" ref={inputFileRef} 
-                        onChange={(e) => props.inputHandler(props.id, {src: window.URL.createObjectURL(e.target.files[0])})} 
+                        onChange={(e) => props.inputHandler(props.id, {src: e.currentTarget.files[0]})} 
                         accept="image/*"
                         hidden/>
                     <img
                         className={classes.imgCardTop} 
                         style={{height: "180px", width: "100%", display: "block", whiteSpace: "nowrap", objectFit: "cover"}}
-                        src={props.src}
+                        src={typeof props.src === "string" ? props.src : window.URL.createObjectURL(props.src)}
                         alt="Card-img-cap"
                     />
                 </Button>
@@ -146,6 +146,6 @@ export const DevcardEditor = memo((props) => {
             </Card>
         </GridItem>
     );
-});
+};
 
 export default DevcardEditor;

@@ -21,7 +21,7 @@ export const Developcard = memo((props) => {
         <GridItem xs={12} sm={12} md={4}>
             <Card>
                 <img
-                    style={{height: "180px", width: "100%", display: "block"}}
+                    style={{height: "180px", width: "100%", display: "block", objectFit: "cover"}}
                     className={classes.imgCardTop}
                     src={props.src}
                     alt="Card-img-cap"
