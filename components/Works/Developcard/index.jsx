@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { Card, CardBody, Button, GridItem } from "/components/creative-tim";
 import { Box, Tooltip } from "@material-ui/core";
 import { Twitter, GitHub, FileCopy, Event, Public } from "@material-ui/icons";
@@ -14,9 +14,19 @@ const styles = {
 };
 
 const useStyles = makeStyles(styles);
+const heights = [];
 
 export const Developcard = memo((props) => {
     const classes = useStyles();
+
+    const [commentHeight, setCommentHeight] = useState();
+    const commentRef = useRef(null);
+
+    useEffect(()=>{
+        heights.push(commentRef.current.clientHeight);
+        setCommentHeight(Math.max(...heights));
+    },[]);
+
     return(
         <GridItem xs={12} sm={12} md={4}>
             <Card>
@@ -29,7 +39,7 @@ export const Developcard = memo((props) => {
                 <CardBody>
                     <h4 className={classes.cardTitle}>{props.title}</h4>
                     <small>{props.mute}</small>
-                    <p>{props.children}</p>
+                    <p ref={commentRef} style={{height: commentHeight}}>{props.children}</p>
                     <Box style={{textAlign: 'center'}}>
                         {props.deploy &&
                         <Tooltip title="check for Deploy" placement="top">

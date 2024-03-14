@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { Card, CardBody, Button, GridItem } from "/components/creative-tim";
 import { Box, Tooltip } from "@material-ui/core";
 import { Event } from "@material-ui/icons";
@@ -11,9 +11,18 @@ const styles = {
     cardTitle,
 };
 const useStyles = makeStyles(styles);
+const heights = [];
 
 export const Awardcard = memo((props) => {
     const classes = useStyles();
+
+    const [commentHeight, setCommentHeight] = useState();
+    const commentRef = useRef(null);
+
+    useEffect(()=>{
+        heights.push(commentRef.current.clientHeight);
+        setCommentHeight(Math.max(...heights));
+    },[]);
 
     return(
         <GridItem xs={12} sm={12} md={4}>
@@ -26,10 +35,10 @@ export const Awardcard = memo((props) => {
                 />
                 <CardBody>
                     <h4 className={classes.cardTitle}>{props.title}</h4>
-                    <p>{props.event}</p>
+                    <p ref={commentRef} style={{height: commentHeight}}>{props.comment}</p>
                     <Box style={{textAlign: 'center'}}>
                         <Tooltip title="check for event" placement="top">
-                            <Button href={props.link} target="_blank" size="lg" round justIcon simple>
+                            <Button href={props.event} target="_blank" size="lg" round justIcon simple>
                                 <Event style={{color:'#6a6a6a'}} />
                             </Button>
                         </Tooltip>

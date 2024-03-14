@@ -64,14 +64,14 @@ export const DevelopEditor = memo(() => {
     },[]);
 
     const saveHandler = useCallback(() => {
-        develop.development.map((columns, index) => {
-            if (typeof columns.src === "string") {
-                return columns;
+        develop.development.map((work, index) => {
+            if (typeof work.src === "string") {
+                return work;
             } else {
                 new Development(
                     process.env.NEXT_PUBLIC_SUPABASE_URL, 
                     process.env.NEXT_PUBLIC_SUPABASE_KEY
-                    ).upload_to_storage(columns.src.name, columns.src)
+                    ).upload_to_storage(work.src.name, work.src)
                 .then((src_prop)=> {
                     setValue(index, src_prop)
                 });

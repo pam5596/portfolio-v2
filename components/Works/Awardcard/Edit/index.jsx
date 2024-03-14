@@ -25,13 +25,13 @@ export const AwardcardEditor = memo((props) => {
             <Card>
                 <Button style={{padding: "0px"}} onClick={() => inputFileRef.current.click()} accept="image/*" simple>
                     <input type="file" ref={inputFileRef} 
-                        onChange={(e) => props.inputHandler(props.id, {src: window.URL.createObjectURL(e.target.files[0])})} 
+                        onChange={(e) => props.inputHandler(props.id, {src: e.currentTarget.files[0]})} 
                         accept="image/*"
                         hidden/>
                     <img
                         className={classes.imgCardTop} 
                         style={{height: "180px", width: "100%", display: "block", whiteSpace: "nowrap", objectFit: "cover"}}
-                        src={props.src}
+                        src={typeof props.src === "string" ? props.src : window.URL.createObjectURL(props.src)}
                         alt="Card-img-cap"
                     />
                 </Button>

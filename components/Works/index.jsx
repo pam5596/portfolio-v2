@@ -11,8 +11,10 @@ import { callAPI } from "/src/request.js";
 
 export default function Works() {
     const [developContent, setDevelopContent] = useState();
+    const [awardContent, setAwardContent] = useState();
 
     useEffect(()=>{
+        // DevelopmentのAPIからデータを取得
         callAPI('GET', '/api/development', null)
             .then(
                 (response)=>{
@@ -36,6 +38,38 @@ export default function Works() {
                                 );
                             }
                         ));
+        
+        // AwardsのAPIからデータを取得
+        callAPI('GET', '/api/award', null)
+            .then(
+                (response)=>{
+                    if (response.status === 200) {
+                        setAwardContent(response.data.awards.map(
+                            (content) => {
+                                return(
+                                    <Awardcard 
+                                        title={content.title}
+                                        src={content.src}
+                                        comment={content.comment}
+                                        event={content.event}
+                                        time={content.time}
+                                    />
+                                );
+                            }
+                        ));
+
+        
+        // developmentのエラーハンドリング
+                    } else {
+                        alert(`APIの取得に失敗しました\n${response}`)
+                    }
+                }
+            )
+            .catch(
+                (error) => alert(`APIの取得に失敗しました\n${error}`)
+            );
+        
+        // awardのエラーハンドリング
                     } else {
                         alert(`APIの取得に失敗しました\n${response}`)
                     }
@@ -102,11 +136,8 @@ export default function Works() {
                             tabIcon: EmojiEvents,
                             tabContent: (
                                 <GridContainer>
-                                    <Awardcard title="Test" event="test" time="2020/02/02" 
-                                        link="https://www.youtube.com/"
-                                    />
+                                    {awardContent}
                                 </GridContainer>
-                                
                             )
                         }
                     ]}

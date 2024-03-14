@@ -8,12 +8,10 @@ import { AwardEditor } from "/components/Works/Edit/AwardEditor";
 import { callAPI } from "/src/request.js";
 
 
-import developsample from "/components/Works/Edit/DevelopEditor/sample.json";
-import awardsample from "/components/Works/Edit/AwardEditor/sample.json";
-
 export default function EditWorks() {
     // cardコンポーネント群の状態管理
     const [developData, setDevelop] = useState();
+    const [awardsData, setAward] = useState();
 
     // ローディング状態管理
     const [loading, setLoading] = useState(
@@ -31,23 +29,23 @@ export default function EditWorks() {
                         setLoading(loading);
         
         // Awardのデータを取得
-        // callAPI('GET', '/api/award', null)
-        //     .then(
-        //         (response)=>{
-        //             if (response.status === 200) {
-        //                 setAward(response.data);
-        //                 loading.award = false;
-        //                 setLoading(loading);
+        callAPI('GET', '/api/award', null)
+            .then(
+                (response)=>{
+                    if (response.status === 200) {
+                        setAward(response.data);
+                        loading.award = false;
+                        setLoading(loading);
         
-        //     // awardのエラーハンドリング
-        //             } else {
-        //                 alert(`APIの取得に失敗しました\n${response}`)
-        //             }
-        //         }
-        //     )
-        //     .catch(
-        //         (error) => alert(`APIの取得に失敗しました\n${error}`)
-        //     );
+            // awardのエラーハンドリング
+                    } else {
+                        alert(`APIの取得に失敗しました\n${response}`)
+                    }
+                }
+            )
+            .catch(
+                (error) => alert(`APIの取得に失敗しました\n${error}`)
+            );
             
             // databaseのエラーハンドリング
                     } else {
@@ -76,17 +74,19 @@ export default function EditWorks() {
                         tabIcon: DeveloperMode,
                         tabContent:
                             loading.develop ||
-                        (
+                            (
                             <DevelopProvider firstValue={developData}>
                                 <DevelopEditor />
                             </DevelopProvider>
-                        )
+                            )
                         },
                         {
-                            tabName: "Awards",
-                            tabIcon: EmojiEvents,
-                            tabContent: (
-                                <AwardProvider firstValue={awardsample}>
+                        tabName: "Awards",
+                        tabIcon: EmojiEvents,
+                        tabContent:
+                            loading.award ||
+                            (
+                                <AwardProvider firstValue={awardsData}>
                                     <AwardEditor />
                                 </AwardProvider>
                             )

@@ -1,9 +1,11 @@
 import { useState, useContext, useCallback, memo } from 'react';
 import { GridContainer, GridItem, Button } from '/components/creative-tim';
-import { Add, Delete } from "@material-ui/icons";
+import { Add, Delete, Save } from "@material-ui/icons";
 
 import { AwardContext } from '/components/Works/Edit/global_state';
 import AwardcardEditor from '/components/Works/Awardcard/Edit';
+import Award from '/src/models/Award.js';
+import { callAPI } from '/src/request.js';
 
 export const AwardEditor = memo(() => {
     // sample data array object
@@ -27,6 +29,7 @@ export const AwardEditor = memo(() => {
     const setValue = useCallback((id, property) => {
         award.awards[id] = {...award.awards[id], ...property};
         setAward(award);
+        setAwardEditor(setup_award());
     }, []);
 
 
@@ -50,9 +53,48 @@ export const AwardEditor = memo(() => {
         setAwardEditor(setup_award());
     }, []);
 
+    const saveHandler = useCallback(() => {
+        award.awards.map((award, index) => {
+            if (typeof award.src === "string") {
+                return award;
+            } else {
+                new Award(
+                    process.env.NEXT_PUBLIC_SUPABASE_URL,
+                    process.env.NEXT_PUBLIC_SUPABASE_KEY
+                    ).upload_to_storage(award.src.name, award.src)
+                .then((src_prop)=>{
+                    setValue(index, src_prop)
+                });
+            }
+        });
+        
+        callAPI('POST', '/api/award', award)
+            .then(
+                (response) => {
+                    if (response.status == 200) {
+                        alert(response.data);
+                    } else {
+                        alert("Awardsの更新に失敗しました。")
+                    }
+                }
+            )
+            .catch(
+                (error) => alert(`APIの取得に失敗しました\n${error}`)
+            )
+    }, []);
+
     return (
         <>
             <GridContainer>
+                <Button
+                    variant="contained" 
+                    startIcon={<Save />} 
+                    style={{backgroundColor: "#266adf", color: "white"}} 
+                    fullWidth
+                    onClick={saveHandler}
+                >
+                    Save
+                </Button>
                 <GridItem xs={6} sm={6} md={6}>
                     <h3>Awards Editor</h3>
                 </GridItem>
