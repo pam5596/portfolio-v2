@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { GridContainer, GridItem, CustomTabs } from "/components/creative-tim";
 import { DeveloperMode, QueueMusic, Description, EmojiEvents } from "@material-ui/icons";
 
@@ -9,9 +9,10 @@ import { Awardcard } from "/components/Works/Awardcard";
 
 import { callAPI } from "/src/request.js";
 
-export default function Works() {
+const Works = memo(() => {
     const [developContent, setDevelopContent] = useState();
     const [awardContent, setAwardContent] = useState();
+    const [compContent, setCompContent] = useState();
 
     useEffect(()=>{
         // DevelopmentのAPIからデータを取得
@@ -19,7 +20,7 @@ export default function Works() {
             .then(
                 (response)=>{
                     if (response.status === 200) {
-                        setDevelopContent(response.data.development.map(
+                        let renderDev = response.data.development.map(
                             (content) => {
                                 return(
                                     <Developcard 
@@ -37,14 +38,16 @@ export default function Works() {
                                     </Developcard>
                                 );
                             }
-                        ));
+                        );
+                        renderDev.reverse();
+                        setDevelopContent(renderDev);
         
         // AwardsのAPIからデータを取得
         callAPI('GET', '/api/award', null)
             .then(
                 (response)=>{
                     if (response.status === 200) {
-                        setAwardContent(response.data.awards.map(
+                        let renderAward = response.data.awards.map(
                             (content) => {
                                 return(
                                     <Awardcard 
@@ -56,7 +59,50 @@ export default function Works() {
                                     />
                                 );
                             }
-                        ));
+                        );
+                        renderAward.reverse();
+                        setAwardContent(renderAward);
+        
+         // ComposementのAPIからデータを取得
+        callAPI('GET', '/api/composement', null)
+            .then(
+                (response)=>{
+                    if (response.status === 200) {
+                        let renderComp = response.data.data.map(
+                            (content) => {
+                                const timeDate = new Date(content.time);
+                                return (
+                                    <Composecard 
+                                        title={content.title} 
+                                        genre={content.genre} 
+                                        time={`
+                                            ${timeDate.getFullYear()}/${String(timeDate.getMonth()+1).length == 1 
+                                                ? String("0" + (timeDate.getMonth()+1)) 
+                                                : String(timeDate.getMonth()+1)}/${String(timeDate.getDate()+1).length == 1
+                                                    ? String("0" + (timeDate.getDate()+1))
+                                                    : String(timeDate.getDate()+1)
+                                                }
+                                        `}
+                                        src={content.src}
+                                        youtube={content.youtube}
+                                        soundcloud={content.soundcloud}
+                                        twitter={content.twitter}
+                                    />
+                                );
+                            }
+                        );
+                        renderComp.reverse();
+                        setCompContent(renderComp);
+        
+        // composementのエラーハンドリング
+                    } else {
+                        alert(`APIの取得に失敗しました\n${response}`)
+                    }
+                }
+            )
+            .catch(
+                (error) => alert(`APIの取得に失敗しました\n${error}`)
+            );
 
         
         // developmentのエラーハンドリング
@@ -89,6 +135,7 @@ export default function Works() {
                 <GridItem xs={12}>
                 <CustomTabs
                     headerColor="info"
+                    
                     tabs={[
                         {
                         tabName: "Development",
@@ -104,16 +151,7 @@ export default function Works() {
                         tabIcon: QueueMusic,
                         tabContent: (
                             <GridContainer>
-                                <Composecard 
-                                    title="Test" 
-                                    genre="test" 
-                                    time="2020/02/02"
-                                    src="https://i1.sndcdn.com/avatars-QguU21zU1btfoVWA-y6dmHw-t500x500.jpg"
-                                    audio="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-                                    youtube="https://www.youtube.com/"
-                                    soundcloud="https://soundcloud.com/"
-                                    twitter="https://twitter.com/"
-                                />
+                                {compContent}
                             </GridContainer>
                         )
                         },
@@ -146,4 +184,6 @@ export default function Works() {
             </GridContainer>
         </>
     );
-}
+});
+
+export default Works;

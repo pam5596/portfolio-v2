@@ -1,7 +1,8 @@
-import { useState, memo } from "react";
+import { useState, memo, useRef, useEffect } from "react";
 import { Card, CardBody, Button, GridItem } from "/components/creative-tim";
 import { Box, IconButton, Tooltip } from "@material-ui/core";
 import { PlayArrow, Pause, YouTube, Twitter, CloudQueue } from "@material-ui/icons";
+
 import { makeStyles } from "@material-ui/core/styles";
 import imagesStyles from "/styles/jss/nextjs-material-kit/imagesStyles.js";
 import { cardTitle } from "/styles/jss/nextjs-material-kit.js";
@@ -11,21 +12,32 @@ const styles = {
     cardTitle,
 };
 const useStyles = makeStyles(styles);
+const heights = [];
 
 export const Composecard = memo((props) => {
     const classes = useStyles();
-    const [[isplay, icon], setPlayState] = useState([false, <PlayArrow />]);
-    const [audio, _] = useState(new Audio(props.audio));
 
-    const switchPlay = () => {
-        if (isplay) {
-            setPlayState([false, <PlayArrow />]);
-            audio.pause();
-        } else {
-            setPlayState([true, <Pause />]);
-            audio.play();
-        }
-    };
+    const [titleHeight, setTitleHeight] = useState();
+    const titleRef = useRef(null);
+
+    useEffect(()=>{
+        heights.push(titleRef.current.clientHeight);
+        setTitleHeight(Math.max(...heights));
+    },[]);
+    // Todo: audioの再生を実装
+    // const [[isplay, icon], setPlayState] = useState([false, <PlayArrow />]);
+    // const [audio, _] = useState(new Audio(props.audio));
+
+    // Todo: audioの再生を実装
+    // const switchPlay = () => {
+    //     if (isplay) {
+    //         setPlayState([false, <PlayArrow />]);
+    //         audio.pause();
+    //     } else {
+    //         setPlayState([true, <Pause />]);
+    //         audio.play();
+    //     }
+    // };
 
     return(
         <GridItem xs={6} sm={6} md={3}>
@@ -37,13 +49,13 @@ export const Composecard = memo((props) => {
                     alt="Card-img-cap"
                 />
                 <CardBody>
-                    <h4 className={classes.cardTitle}>{props.title}</h4>
+                    <h4 style={{height: titleHeight}} ref={titleRef} className={classes.cardTitle}>{props.title}</h4>
                     <span>Genre: {props.genre}</span>
-                    <Box style={{textAlign: 'center'}}>
+                    {/* <Box style={{textAlign: 'center'}}>
                         <IconButton onClick={switchPlay}>
                             {icon}
                         </IconButton>
-                    </Box>
+                    </Box> */}
                     <Box style={{textAlign: 'center'}}>
                         {props.youtube &&
                         <Tooltip title="check for Youtube" placement="top">
