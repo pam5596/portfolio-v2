@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useRef, useState, useEffect } from "react";
 import { Card, CardBody, Button, GridItem } from "/components/creative-tim";
 import { Box, Tooltip } from "@material-ui/core";
 import { Public } from "@material-ui/icons";
@@ -11,9 +11,18 @@ const styles = {
     cardTitle,
 };
 const useStyles = makeStyles(styles);
+const heights = [];
 
 export const Writecard = memo((props) => {
     const classes = useStyles();
+
+    const [titleHeight, setTitleHeight] = useState();
+    const titleRef = useRef(null);
+
+    useEffect(()=>{
+        heights.push(titleRef.current.clientHeight);
+        setTitleHeight(Math.max(...heights));
+    },[]);
 
     return(
         <GridItem xs={12} sm={12} md={4}>
@@ -25,7 +34,7 @@ export const Writecard = memo((props) => {
                     alt="Card-img-cap"
                 />
                 <CardBody>
-                    <h4 className={classes.cardTitle}>{props.title}</h4>
+                    <h5 style={{height: titleHeight}} ref={titleRef} className={classes.cardTitle}>{props.title}</h5>
                     <p>{props.children}</p>
                     <Box style={{textAlign: 'center'}}>
                         <Tooltip title="check for Blog" placement="top">

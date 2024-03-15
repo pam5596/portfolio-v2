@@ -13,6 +13,7 @@ const Works = memo(() => {
     const [developContent, setDevelopContent] = useState();
     const [awardContent, setAwardContent] = useState();
     const [compContent, setCompContent] = useState();
+    const [writeContent, setWriteContent] = useState();
 
     useEffect(()=>{
         // DevelopmentのAPIからデータを取得
@@ -63,7 +64,7 @@ const Works = memo(() => {
                         renderAward.reverse();
                         setAwardContent(renderAward);
         
-         // ComposementのAPIからデータを取得
+        // ComposementのAPIからデータを取得
         callAPI('GET', '/api/composement', null)
             .then(
                 (response)=>{
@@ -93,6 +94,47 @@ const Works = memo(() => {
                         );
                         renderComp.reverse();
                         setCompContent(renderComp);
+
+        // WritingsのAPIからデータを取得
+        callAPI('GET', '/api/writing', null)
+            .then(
+                (response)=>{
+                    if (response.status === 200) {
+                        console.log(response.data);
+                        setWriteContent(
+                            response.data.map(
+                                (content) => {
+                                    const timeDate = new Date(content.created_at);
+                                    return (
+                                        <Writecard
+                                            title={content.title}
+                                            src="https://blog.qiita.com/wp-content/uploads/2019/12/8c88f8f4-9783-d36c-a547-e5c799f1253f-1-1024x538.png"
+                                            time={`
+                                            ${timeDate.getFullYear()}/${String(timeDate.getMonth()+1).length == 1 
+                                                ? String("0" + (timeDate.getMonth()+1)) 
+                                                : String(timeDate.getMonth()+1)}/${String(timeDate.getDate()+1).length == 1
+                                                    ? String("0" + (timeDate.getDate()+1))
+                                                    : String(timeDate.getDate()+1)
+                                                }
+                                            `}
+                                            link={content.url}
+                                        >
+                                            Qiita
+                                        </Writecard>
+                                    );
+                                }
+                            )
+                        );
+
+        // Writingsのエラーハンドリング
+                    } else {
+                        alert(`APIの取得に失敗しました\n${response}`)
+                    }
+                }
+            )
+            .catch(
+                (error) => alert(`APIの取得に失敗しました\n${error}`)
+            );
         
         // composementのエラーハンドリング
                     } else {
@@ -160,12 +202,7 @@ const Works = memo(() => {
                         tabIcon: Description,
                         tabContent: (
                             <GridContainer>
-                                <Writecard 
-                                    title="Test" 
-                                    time="2020/02/02"
-                                    src="https://i1.sndcdn.com/avatars-QguU21zU1btfoVWA-y6dmHw-t500x500.jpg"
-                                    link="https://www.youtube.com/">
-                                </Writecard>
+                                {writeContent}
                             </GridContainer>
                         )
                         },
