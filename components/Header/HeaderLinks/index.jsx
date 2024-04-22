@@ -95,7 +95,7 @@ export default function HeaderLinks(props) {
         >
           <Button
             color="transparent"
-            href="https://mail.google.com/mail/?view=cm&to=paradon.taiko.3191@gmail.com"
+            href="https://mail.google.com/mail/?view=cm&to=ryosuke3191@gmail.com"
             target="_blank"
             className={classes.navLink}
           >
