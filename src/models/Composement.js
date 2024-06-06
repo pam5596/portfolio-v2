@@ -43,12 +43,12 @@ export default class Composement extends Supabase{
         const { data, error } = await this.supabase
             .from('works-composement')
             .select();
-        
+                
         if (error) { // エラーが発生した場合
             return { data: null, error: error };
         
         // 24時間以内に更新されたデータがある場合
-        } else if (data[0].upsert_date == new Date()){
+        } else if (data[0]?.upsert_date == new Date()){
             return { data, error }
         
         // 24時間以内に更新されたデータがない場合
