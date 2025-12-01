@@ -1,4 +1,4 @@
-# my_portfolio
+# portfolio-v2
 
 学部2年生の冬に製作した二代目マイポートフォリオ。<br>
 React+JavaScriptを初めて勉強し、Nextjsで初めてwebサイトを構築した。<br>
